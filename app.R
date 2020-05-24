@@ -1,32 +1,43 @@
 # required libraries ------------------------------------------------------
-library(tidyverse)
+library(data.table)
+library(magrittr)
 library(shiny)
 library(leaflet)
 library(leaflet.extras)
-library(htmltools)
 library(emojifont)
 library(shinybusy)
+library(RCurl)
+
 
 # read geolocalized data --------------------------------------------------
 d <- readRDS("shiny/escuelas_geolocalizado.rds")
+d$cue_anexo <- as.integer(d$cue_anexo)
+setDT(d)
 
+
+# read corrections file to fix wrong geocoding ----------------------------
+url <- getURL("https://raw.githubusercontent.com/canovasjm/escuelas/master/correcciones/correcciones.csv")
+d_corrections <- read.csv(text = url)
+setDT(d_corrections)
+
+
+# replace wrong lat and lon with the corrections --------------------------
+d <- d[d_corrections, on = "cue_anexo", c("lat", "lon") := list(i.lat, i.lon)]
+
+
+# read labels for each sector ---------------------------------------------
 label_estatal <- readRDS("shiny/label_estatal.rds")
 label_privado <- readRDS("shiny/label_privado.rds")
 
+
 # prepare data ------------------------------------------------------------
 # filter data by sector
-sector_estatal <- d %>% 
-  filter(sector == "Estatal")
-
-sector_privado <- d %>% 
-  filter(sector == "Privado")
+sector_estatal <- d[sector == "Estatal", ]
+sector_privado <- d[sector == "Privado", ]
 
 
 # general objects ---------------------------------------------------------
 # define color palette
-# pal <- colorFactor(palette = viridis_pal()(2), 
-#                    levels = c("Estatal", "Privado"))
-
 pal <- colorFactor(palette = c("darkred", "steelblue"),
                    levels = c("Estatal", "Privado"))
 
@@ -65,6 +76,7 @@ ui <- fluidPage(
   
 server <- function(input, output, session) {
   output$map <- renderLeaflet({
+    
     # create base map
     m <- d %>% 
       leaflet() %>% 
