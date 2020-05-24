@@ -1,0 +1,12 @@
+.Rhistory
+.Rproj.user/
+00_sandbox.R
+dataset/escuelas_geolocalizado_batch_1.csv
+dataset/escuelas_geolocalizado_batch_2.csv
+dataset/escuelas_geolocalizado_batch_3.csv
+dataset/geolocalizado_san_juan.csv
+dataset/mae_actualizado_2019-12-02_envios.zip
+escuelas_workspace.RData
+links.txt
+rsconnect/
+
