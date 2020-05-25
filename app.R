@@ -106,7 +106,7 @@ server <- function(input, output, session) {
                        overlayGroups = c("Estatal", "Privado"),
                        position = "topleft",
                        options = layersControlOptions(collapsed = FALSE)) %>% 
-      addLegend(title = "Referencias", position = "bottomright" , pal = pal , values = c("Estatal", "Privado")) 
+      addLegend(title = "Referencias", position = "bottomright", pal = pal, values = c("Estatal", "Privado")) 
     })
 }
 

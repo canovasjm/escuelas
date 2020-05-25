@@ -73,7 +73,7 @@ m %>%
   addLayersControl(baseGroups = c("Toner", "Dark", "OSM"),
                    overlayGroups = c("Estatal", "Privado"),
                    position = "topleft") %>% 
-  addLegend(title = "Referencias", position = "bottomright" , pal = pal , values = c("Estatal", "Privado"))
+  addLegend(title = "Referencias", position = "bottomright", pal = pal, values = c("Estatal", "Privado"))
   
 
 
